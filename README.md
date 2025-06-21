@@ -95,6 +95,7 @@ streamlit run app.py
 
 ### 📸 Output Screenshot
 ![screenshot](https://github.com/JalajBaghwala/ebay-legal-chatbot/blob/main/Screenshot%20(43).png)
+![screenshot](https://github.com/JalajBaghwala/ebay-legal-chatbot/blob/main/Screenshot%20(44).png)
 
 ---
 
