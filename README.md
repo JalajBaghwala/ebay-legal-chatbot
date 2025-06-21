@@ -94,7 +94,7 @@ streamlit run app.py
 - **Q:** Who owns the items sold through eBay?
 
 ### 📸 Output Screenshot
-![screenshot](https://user-images.githubusercontent.com/your-upload-url-here.png)
+![screenshot](https://github.com/JalajBaghwala/ebay-legal-chatbot/blob/main/Screenshot%20(43).png)
 
 ---
 
