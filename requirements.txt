@@ -5,6 +5,7 @@
 # Core Libraries
 langchain>=0.1.14
 langchain-community
+langchain-openai
 faiss-cpu>=1.7.4
 sentence-transformers>=2.2.2
 huggingface_hub>=0.22.2
