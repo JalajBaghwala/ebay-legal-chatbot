@@ -10,7 +10,7 @@ A RAG (Retrieval-Augmented Generation)-based chatbot built to answer legal and p
 flowchart TD
     A[PDF Document] --> B[Preprocessing & Chunking]
     B --> C[Embeddings with LangChain + FAISS]
-    C --> D[Retriever (FAISS)]
+    C --> D[Retriever with FAISS]
     D --> E[Query Input via Streamlit UI]
     E --> F[OpenAI GPT-3.5 Turbo via LangChain]
     F --> G[Answer + Sources Displayed in Chatbot UI]
