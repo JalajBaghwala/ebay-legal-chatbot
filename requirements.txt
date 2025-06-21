@@ -1,0 +1,27 @@
+# nltk
+# PyMuPDF
+# sentence-transformers 
+# faiss-cpu
+# Core Libraries
+langchain>=0.1.14
+langchain-community
+faiss-cpu>=1.7.4
+sentence-transformers>=2.2.2
+huggingface_hub>=0.22.2
+streamlit>=1.32.0
+python-dotenv>=1.0.1
+
+# PDF + Chunking
+PyMuPDF>=1.23.19
+nltk>=3.8.1
+
+# Optional: if using OpenAI models or other LLMs in the future
+openai>=1.23.6
+
+# Compatibility + Utils
+requests>=2.31.0
+tqdm>=4.66.2
+# for UI
+streamlit 
+streamlit-chat
+Pillow
