@@ -54,7 +54,7 @@ if user_input:
     with st.chat_message("assistant"):
         with st.spinner("Generating answer..."):
             response = qa_chain.invoke({"query": user_input})
-            answer = response["result"]
+            # answer = response["result"]
             sources = response.get("source_documents", [])
 
 
