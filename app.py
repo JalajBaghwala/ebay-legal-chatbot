@@ -2,7 +2,6 @@ import streamlit as st
 from src.pipeline import build_rag_pipeline
 from streamlit_chat import message  # optional for advanced chat formatting
 from PIL import Image
-from langchain_openai import ChatOpenAI
 import time
 
 # Page config
@@ -60,6 +59,7 @@ if user_input:
 
             if not sources:
                 # No relevant documents found – fallback to pure GPT
+                from langchain_openai import ChatOpenAI
                 llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
                 fallback_answer = llm.invoke(user_input)
                 answer = fallback_answer.content
