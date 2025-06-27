@@ -56,8 +56,6 @@ if user_input:
             # answer = response["result"]
             sources = response.get("source_documents", [])
 
-
-
             if not sources or all(doc.page_content.strip() == "" for doc in sources):
                 # No relevant documents found – fallback to pure GPT
                 from langchain_openai import ChatOpenAI
