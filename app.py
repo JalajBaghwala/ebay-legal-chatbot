@@ -2,6 +2,7 @@ import streamlit as st
 from src.pipeline import build_rag_pipeline
 from streamlit_chat import message  # optional for advanced chat formatting
 from PIL import Image
+from langchain_openai import ChatOpenAI
 import time
 
 # Page config
@@ -50,26 +51,20 @@ if user_input:
         st.markdown(user_input)
 
     # GPT response simulation with spinner
-    with st.chat_message("assistant"):
+   with st.chat_message("assistant"):
     with st.spinner("Generating answer..."):
         response = qa_chain.invoke({"query": user_input})
+        rag_answer = response.get("result", "").strip()
         sources = response.get("source_documents", [])
-        rag_answer = response["result"].strip()
 
-        # DEBUG logging for clarity
-        st.write(f"**[Debug] RAG answer:** {rag_answer!r}")
-        st.write(f"**[Debug] Number of chunks retrieved:** {len(sources)}")
-
-        # Determine fallback
-        fallback_needed = (
-            not sources or
-            rag_answer.lower().startswith("i don") or
-            len(rag_answer.split()) < 3  # too short indicates low RAG confidence
+        # Define when to fall back: if rag_answer is empty or generic
+        is_rag_uncertain = (
+            rag_answer.lower() in ["i don't know.", "i don't know", ""] or
+            len(rag_answer.split()) <= 3
         )
 
-        if fallback_needed:
-            st.write("🔁 Falling back to GPT-3.5 (no reliable document context)")
-            from langchain_openai import ChatOpenAI
+        if is_rag_uncertain:
+            st.info("⚠️ RAG wasn't confident. Switching to GPT-3.5 directly.")
             llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
             fallback_response = llm.invoke(user_input)
             answer = fallback_response.content
@@ -78,9 +73,9 @@ if user_input:
 
         st.markdown(answer)
 
-        # Show contexts for debug
-        if sources:
-            with st.expander("📚 Retrieved Contexts (debug)"):
+        # Optional: Show source documents if any
+        if sources and not is_rag_uncertain:
+            with st.expander("📚 Retrieved Contexts"):
                 for i, doc in enumerate(sources):
                     st.markdown(f"**Chunk {i+1}:**\n```\n{doc.page_content[:500]}\n```")
 
