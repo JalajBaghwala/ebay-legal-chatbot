@@ -56,10 +56,9 @@ if user_input:
             # answer = response["result"]
             sources = response.get("source_documents", [])
 
-            st.markdown(answer)
 
 
-            if not sources:
+            if not sources or all(doc.page_content.strip() == "" for doc in sources):
                 # No relevant documents found – fallback to pure GPT
                 from langchain_openai import ChatOpenAI
                 llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
@@ -68,6 +67,7 @@ if user_input:
             else:
                 answer = response["result"]
             
+            st.markdown(answer)
             
 
                 
