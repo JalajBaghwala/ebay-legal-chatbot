@@ -82,10 +82,10 @@ if user_input:
             
 
                 
-            if sources:
-                with st.expander("📚 Show Retrieved Contexts"):
-                    for i, doc in enumerate(sources):
-                        st.markdown(f"**Chunk {i+1}:**\n```\n{doc.page_content[:1000]}\n```")
+            # if sources:
+            #     with st.expander("📚 Show Retrieved Contexts"):
+            #         for i, doc in enumerate(sources):
+            #             st.markdown(f"**Chunk {i+1}:**\n```\n{doc.page_content[:1000]}\n```")
 
 
     # Save assistant message
