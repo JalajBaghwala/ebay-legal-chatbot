@@ -2,6 +2,7 @@ import streamlit as st
 from src.pipeline import build_rag_pipeline
 from streamlit_chat import message  # optional for advanced chat formatting
 from PIL import Image
+from langchain_openai import ChatOpenAI
 import time
 
 # Page config
