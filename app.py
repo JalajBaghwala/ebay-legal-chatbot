@@ -51,27 +51,27 @@ if user_input:
         st.markdown(user_input)
 
     # GPT response simulation with spinner
-   with st.chat_message("assistant"):
-    with st.spinner("Generating answer..."):
-        response = qa_chain.invoke({"query": user_input})
-        rag_answer = response.get("result", "").strip()
-        sources = response.get("source_documents", [])
-
-        # Define when to fall back: if rag_answer is empty or generic
-        is_rag_uncertain = (
-            rag_answer.lower() in ["i don't know.", "i don't know", ""] or
-            len(rag_answer.split()) <= 3
-        )
-
-        if is_rag_uncertain:
-            st.info("⚠️ RAG wasn't confident. Switching to GPT-3.5 directly.")
-            llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
-            fallback_response = llm.invoke(user_input)
-            answer = fallback_response.content
-        else:
-            answer = rag_answer
-
-        st.markdown(answer)
+    with st.chat_message("assistant"):
+        with st.spinner("Generating answer..."):
+            response = qa_chain.invoke({"query": user_input})
+            rag_answer = response.get("result", "").strip()
+            sources = response.get("source_documents", [])
+    
+            # Define when to fall back: if rag_answer is empty or generic
+            is_rag_uncertain = (
+                rag_answer.lower() in ["i don't know.", "i don't know", ""] or
+                len(rag_answer.split()) <= 3
+            )
+    
+            if is_rag_uncertain:
+                st.info("⚠️ RAG wasn't confident. Switching to GPT-3.5 directly.")
+                llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
+                fallback_response = llm.invoke(user_input)
+                answer = fallback_response.content
+            else:
+                answer = rag_answer
+    
+            st.markdown(answer)
 
         # Optional: Show source documents if any
         if sources and not is_rag_uncertain:
