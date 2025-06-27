@@ -53,17 +53,20 @@ if user_input:
     with st.chat_message("assistant"):
         with st.spinner("Generating answer..."):
             response = qa_chain.invoke({"query": user_input})
-            # answer = response["result"]
             sources = response.get("source_documents", [])
-
-            if not sources or all(doc.page_content.strip() == "" for doc in sources):
-                # No relevant documents found – fallback to pure GPT
+            answer = response["result"].strip()
+            
+            fallback_needed = (
+                not sources or
+                all(doc.page_content.strip() == "" for doc in sources) or
+                answer.lower() in ["i don't know.", "i don’t know.", "i don't know", "i do not know."]
+            )
+            
+            if fallback_needed:
                 from langchain_openai import ChatOpenAI
                 llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
-                fallback_answer = llm.invoke(user_input)
-                answer = fallback_answer.content
-            else:
-                answer = response["result"]
+                fallback_response = llm.invoke(user_input)
+                answer = fallback_response.content
             
             st.markdown(answer)
             
