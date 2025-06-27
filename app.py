@@ -56,6 +56,8 @@ if user_input:
             # answer = response["result"]
             sources = response.get("source_documents", [])
 
+            st.markdown(answer)
+
 
             if not sources:
                 # No relevant documents found – fallback to pure GPT
@@ -66,7 +68,7 @@ if user_input:
             else:
                 answer = response["result"]
             
-            st.markdown(answer)
+            
 
                 
             if sources:
