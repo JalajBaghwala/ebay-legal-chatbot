@@ -64,7 +64,7 @@ if user_input:
             )
     
             if is_rag_uncertain:
-                # st.info("⚠️ RAG wasn't confident. Switching to GPT-3.5 directly.")
+                st.info("⚠️  This responce is genrate by GPT 3.5- turbo not from the document.")
                 llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
                 fallback_response = llm.invoke(user_input)
                 answer = fallback_response.content
