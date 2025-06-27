@@ -57,12 +57,22 @@ if user_input:
             sources = response.get("source_documents", [])
 
 
+            if not sources:
+                # No relevant documents found – fallback to pure GPT
+                llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
+                fallback_answer = llm.invoke(user_input)
+                answer = fallback_answer.content
+            else:
+                answer = response["result"]
+            
             st.markdown(answer)
 
+                
             if sources:
                 with st.expander("📚 Show Retrieved Contexts"):
                     for i, doc in enumerate(sources):
                         st.markdown(f"**Chunk {i+1}:**\n```\n{doc.page_content[:1000]}\n```")
+
 
     # Save assistant message
     st.session_state.messages.append({"role": "assistant", "content": answer})
