@@ -51,24 +51,39 @@ if user_input:
 
     # GPT response simulation with spinner
     with st.chat_message("assistant"):
-        with st.spinner("Generating answer..."):
-            response = qa_chain.invoke({"query": user_input})
-            sources = response.get("source_documents", [])
-            answer = response["result"].strip()
-            
-            fallback_needed = (
-                not sources or
-                all(doc.page_content.strip() == "" for doc in sources) or
-                answer.lower() in ["i don't know.", "i don’t know.", "i don't know", "i do not know."]
-            )
-            
-            if fallback_needed:
-                from langchain_openai import ChatOpenAI
-                llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
-                fallback_response = llm.invoke(user_input)
-                answer = fallback_response.content
-            
-            st.markdown(answer)
+    with st.spinner("Generating answer..."):
+        response = qa_chain.invoke({"query": user_input})
+        sources = response.get("source_documents", [])
+        rag_answer = response["result"].strip()
+
+        # DEBUG logging for clarity
+        st.write(f"**[Debug] RAG answer:** {rag_answer!r}")
+        st.write(f"**[Debug] Number of chunks retrieved:** {len(sources)}")
+
+        # Determine fallback
+        fallback_needed = (
+            not sources or
+            rag_answer.lower().startswith("i don") or
+            len(rag_answer.split()) < 3  # too short indicates low RAG confidence
+        )
+
+        if fallback_needed:
+            st.write("🔁 Falling back to GPT-3.5 (no reliable document context)")
+            from langchain_openai import ChatOpenAI
+            llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
+            fallback_response = llm.invoke(user_input)
+            answer = fallback_response.content
+        else:
+            answer = rag_answer
+
+        st.markdown(answer)
+
+        # Show contexts for debug
+        if sources:
+            with st.expander("📚 Retrieved Contexts (debug)"):
+                for i, doc in enumerate(sources):
+                    st.markdown(f"**Chunk {i+1}:**\n```\n{doc.page_content[:500]}\n```")
+
             
 
                 
