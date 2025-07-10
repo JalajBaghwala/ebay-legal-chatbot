@@ -102,7 +102,7 @@ streamlit run app.py
 ## 🌐 Demo Link
 🚀 [Live App on Streamlit](https://ebay-legal-chatbot-aauwsas8khura9lim3oxdb.streamlit.app/)
 
-🎥 [Watch Demo Video](https://youtu.be/b2qBrjLNDwg)
+🎥 [Watch Demo Video](https://drive.google.com/file/d/1wwppyeibjk_ELXU-gFxKo3AO_eL5GG_e/view?usp=sharing)
 
 ---
 
